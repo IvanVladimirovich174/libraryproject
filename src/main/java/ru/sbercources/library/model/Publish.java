@@ -1,0 +1,54 @@
+package ru.sbercources.library.model;
+
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "publishing")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Publish {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+
+  @Column(name = "rent_date", nullable = false)
+  private LocalDateTime rentDate;
+
+  @Column(name = "return_date", nullable = false)
+  private LocalDateTime returnDate;
+
+  @Column(name = "returned", nullable = false)
+  private boolean returned;
+
+  @Column(name = "rent_period", nullable = false)
+  private Integer rentPeriod;
+
+  @Column(name = "amount")
+  private Integer amount;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "FK_PUBLISHING_USER"))
+  private User user;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "FK_PUBLISHING_BOOK"))
+  private Book book;
+
+}
