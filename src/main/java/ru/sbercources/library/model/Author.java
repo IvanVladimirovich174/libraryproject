@@ -1,5 +1,6 @@
 package ru.sbercources.library.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,13 +25,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Author {
-
-  @Id
-  @Setter(AccessLevel.NONE)
-  @Column(name = "id", nullable = false)
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+@SequenceGenerator(name = "default_name", sequenceName = "authors_seq", allocationSize = 1)
+public class Author extends GenericModel {
 
   @Column(name = "author_fio")
   private String authorFIO;

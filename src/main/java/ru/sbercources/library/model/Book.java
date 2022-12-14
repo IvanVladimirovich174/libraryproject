@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -27,12 +29,8 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
-
-  @Id
-  @Setter(AccessLevel.NONE)
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
+@SequenceGenerator(name = "default_gen", sequenceName = "books_seq", allocationSize = 1)
+public class Book extends GenericModel{
 
   @Column(name = "download_link")
   private String downloadLink;
@@ -41,6 +39,7 @@ public class Book {
   private String title;
 
   @Column(name = "genre")
+  @Enumerated
   private Genre genre;
 
   @Column(name = "storage_place")
