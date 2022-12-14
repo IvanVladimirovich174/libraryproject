@@ -9,11 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.repository.cdi.Eager;
 
 @Entity
 @Table(name = "users")
@@ -21,18 +23,21 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+@SequenceGenerator(name = "default_gen", sequenceName = "user_seq", allocationSize = 1)
+public class User extends GenericModel {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(
       name = "role_id",
       foreignKey = @ForeignKey(name = "FK_USER_ROLES")
   )
   private Role role;
+
+  @Column(name = "login", nullable = false)
+  private String login;
+
+  @Column(name = "password", nullable = false)
+  private String password;
 
   @Column(name = "first_name")
   private String firstName;
@@ -51,4 +56,19 @@ public class User {
 
   @Column(name = "address")
   private String address;
+
+  @Override
+  public String toString() {
+    return "User{" +
+        "role=" + "role" +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        ", middleName='" + middleName + '\'' +
+        ", email='" + email + '\'' +
+        ", phone='" + phone + '\'' +
+        ", address='" + address + '\'' +
+        '}';
+  }
 }
+
+
