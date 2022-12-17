@@ -23,7 +23,7 @@ import org.springframework.data.repository.cdi.Eager;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = "default_gen", sequenceName = "user_seq", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "user_seq", allocationSize = 1)
 public class User extends GenericModel {
 
   @ManyToOne(fetch = FetchType.EAGER)
