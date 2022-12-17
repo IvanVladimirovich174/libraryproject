@@ -31,4 +31,19 @@ public abstract class GenericModel implements Serializable {
 
   @Column(name = "created_when")
   private LocalDateTime createdWhen;
+
+  @Column(name = "updated_when")
+  private LocalDateTime updatedWhen;
+
+  @Column(name = "updated_by")
+  private String updatedBy;
+
+  @Column(name = "is_deleted")
+  private boolean isDeleted;
+
+  @Column(name = "deleted_when")
+  private LocalDateTime deletedWhen;
+
+  @Column(name = "deleted_by")
+  private String deletedBy;
 }
