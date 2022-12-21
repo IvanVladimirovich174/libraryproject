@@ -1,5 +1,6 @@
 package ru.sbercources.library.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -60,7 +62,7 @@ public class User extends GenericModel {
   @Override
   public String toString() {
     return "User{" +
-        "role=" + "role" +
+        "role=" + role.getTitle() +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
         ", middleName='" + middleName + '\'' +
@@ -69,6 +71,20 @@ public class User extends GenericModel {
         ", address='" + address + '\'' +
         '}';
   }
+
+  @Builder
+  public User(Long id, String createdBy, LocalDateTime createdWhen, LocalDateTime updatedWhen, String updatedBy, boolean isDeleted,
+      LocalDateTime deletedWhen, String deletedBy, Role role, String login, String password, String firstName, String lastName,
+      String middleName, String email, String phone, String address) {
+    super(id, createdBy, createdWhen, updatedWhen, updatedBy, isDeleted, deletedWhen, deletedBy);
+    this.role = role;
+    this.login = login;
+    this.password = password;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.middleName = middleName;
+    this.email = email;
+    this.phone = phone;
+    this.address = address;
+  }
 }
-
-

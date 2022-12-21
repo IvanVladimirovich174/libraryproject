@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ru.sbercources.library.dto.RoleDto;
 
 @Entity
 @Table(name = "roles")
@@ -34,4 +35,10 @@ public class Role {
 
   @Column(name = "description")
   private String description;
+
+  public Role(RoleDto roleDto) {
+    this.id = roleDto.getId();
+    this.title = roleDto.getTitle();
+    this.description = roleDto.getDescription();
+  }
 }

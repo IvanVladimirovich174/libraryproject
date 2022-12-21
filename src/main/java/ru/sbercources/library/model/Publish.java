@@ -23,7 +23,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = "default_gen", sequenceName = "publishing_seq", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "publishing_seq", allocationSize = 1)
 public class Publish extends GenericModel {
 
   @Column(name = "rent_date", nullable = false)

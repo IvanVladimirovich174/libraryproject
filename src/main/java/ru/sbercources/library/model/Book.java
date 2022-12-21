@@ -1,5 +1,6 @@
 package ru.sbercources.library.model;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +25,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SequenceGenerator(name = "default_gen", sequenceName = "books_seq", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "books_seq", allocationSize = 1)
 public class Book extends GenericModel{
 
   @Column(name = "download_link")
@@ -54,4 +56,17 @@ public class Book extends GenericModel{
       inverseForeignKey = @ForeignKey(name = "FK_AUTHORS_BOOKS"))
   private Set<Author> authors = new HashSet<>();
 
+  @Builder
+  public Book(Long id, String createdBy, LocalDateTime createdWhen, LocalDateTime updatedWhen, String updatedBy, boolean isDeleted,
+      LocalDateTime deletedWhen, String deletedBy, String downloadLink, String title, Genre genre, String storagePlace, Integer amount,
+      String publishYear, Set<Author> authors) {
+    super(id, createdBy, createdWhen, updatedWhen, updatedBy, isDeleted, deletedWhen, deletedBy);
+    this.downloadLink = downloadLink;
+    this.title = title;
+    this.genre = genre;
+    this.storagePlace = storagePlace;
+    this.amount = amount;
+    this.publishYear = publishYear;
+    this.authors = authors;
+  }
 }

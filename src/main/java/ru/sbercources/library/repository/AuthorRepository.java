@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.sbercources.library.model.Author;
 
 @Repository
-public interface AuthorRepository extends JpaRepository<Author, Long> {
+public interface AuthorRepository extends GenericRepository<Author> {
 
 }

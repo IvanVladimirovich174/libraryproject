@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.sbercources.library.model.Publish;
 
 @Repository
-public interface PublishRepository extends JpaRepository<Publish, Long> {
+public interface PublishRepository extends GenericRepository<Publish> {
 
 }
