@@ -17,9 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class GenericModel implements Serializable {
-
-  static final long SerialVersionUID = -4862926644813433707L;
+public abstract class GenericModel {
 
   @Id
   @Column(name="id", nullable = false)

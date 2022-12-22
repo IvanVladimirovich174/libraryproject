@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import ru.sbercources.library.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends GenericRepository<User> {
 
   List<User> findAllByFirstName(String firstName);
   List<User> findAllByFirstNameAndMiddleName(String firstName, String middleName);

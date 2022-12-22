@@ -18,8 +18,8 @@ public class Converter<U, T>{
     return fromDto.apply(dto);
   }
 
-  public final T convertFromEntity(final U entite) {
-    return fromEntity.apply(entite);
+  public final T convertFromEntity(final U entity) {
+    return fromEntity.apply(entity);
   }
 
   public final List<U> createFromDtos(final Collection<T> dtos) {
