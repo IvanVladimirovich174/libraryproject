@@ -87,4 +87,5 @@ public class User extends GenericModel {
     this.phone = phone;
     this.address = address;
   }
+
 }

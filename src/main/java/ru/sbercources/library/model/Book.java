@@ -1,8 +1,10 @@
 package ru.sbercources.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -47,7 +49,8 @@ public class Book extends GenericModel{
   @Column(name = "publish_year")
   private String publishYear;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+//  @JsonIgnore //убирает рекурсию
   @JoinTable(
       name = "books_authors",
       joinColumns = @JoinColumn(name = "book_id"),
