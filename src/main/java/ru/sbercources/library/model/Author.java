@@ -1,5 +1,6 @@
 package ru.sbercources.library.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -8,9 +9,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -39,7 +43,14 @@ public class Author extends GenericModel {
   @Column(name = "description")
   private String description;
 
-  @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+//  @JsonIgnore //убирает рекурсию
+  @JoinTable(
+      name = "books_authors",
+      joinColumns = @JoinColumn(name = "author_id"),
+      foreignKey = @ForeignKey(name = "FK_AUTHORS_BOOKS"),
+      inverseJoinColumns = @JoinColumn(name = "book_id"),
+      inverseForeignKey = @ForeignKey(name = "FK_BOOKS_AUTHORS"))
   private Set<Book> books = new HashSet<>();
 
 

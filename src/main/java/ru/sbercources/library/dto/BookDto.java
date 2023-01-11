@@ -1,5 +1,6 @@
 package ru.sbercources.library.dto;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import ru.sbercources.library.model.Genre;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookDto {
+
   private Long id;
   private String downloadLink;
   private String title;
