@@ -6,6 +6,12 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sbercources.library.model.Author;
 import ru.sbercources.library.service.GenericService;
 
+
+/**
+ * Реазация контроллера для сущности Author
+ * При наследовании этого класса от GenericController<T>,
+ * автоматически реализуются основные CRUD операции
+ */
 @Slf4j
 @RestController
 @RequestMapping("/rest/author")

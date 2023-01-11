@@ -5,9 +5,16 @@ import org.springframework.stereotype.Service;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.repository.GenericRepository;
 
+/**
+ * Абстрактный сервис который хранит в себе реализацию CRUD операций по умолчанию
+ * Если реализация отличная от того что представлено в этом классе,
+ * то она переопределяется в сервисе для конкретной сущности
+ * @param <T> - Сущность с которой мы работаем
+ */
 @Service
 public abstract class GenericService<T extends GenericModel> {
 
+  //Инжектим абстрактный репозиторий для работы с базой данных
   private final GenericRepository<T> repository;
 
   protected GenericService(GenericRepository<T> repository) {

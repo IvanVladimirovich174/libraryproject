@@ -13,8 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.service.GenericService;
 
+/**
+ * Абстрактный контроллер
+ * который реализует все EndPoint`ы для crud операций используя абстрактный сервис
+ * @param <T> - Сущность с которой работает контроллер
+ */
 @RestController
 public abstract class GenericController<T extends GenericModel> {
+
 
   private final GenericService<T> service;
   protected GenericController(GenericService<T> service) {
