@@ -9,7 +9,7 @@ import ru.sbercources.library.repository.GenericRepository;
 public abstract class GenericService<T extends GenericModel> {
 
   private final GenericRepository<T> repository;
-
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   protected GenericService(GenericRepository<T> repository) {
     this.repository = repository;
   }

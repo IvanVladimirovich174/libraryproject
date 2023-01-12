@@ -19,7 +19,6 @@ import ru.sbercources.library.dto.RoleDto;
 @Table(name = "roles")
 @Getter
 @Setter
-@ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

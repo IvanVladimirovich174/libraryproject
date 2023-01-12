@@ -28,7 +28,7 @@ import org.springframework.data.repository.cdi.Eager;
 @SequenceGenerator(name = "default_generator", sequenceName = "user_seq", allocationSize = 1)
 public class User extends GenericModel {
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(
       name = "role_id",
       foreignKey = @ForeignKey(name = "FK_USER_ROLES")
@@ -62,7 +62,7 @@ public class User extends GenericModel {
   @Override
   public String toString() {
     return "User{" +
-        "role=" + role.getTitle() +
+        "role=" + role.getId() +
         ", firstName='" + firstName + '\'' +
         ", lastName='" + lastName + '\'' +
         ", middleName='" + middleName + '\'' +

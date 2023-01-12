@@ -10,21 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import ru.sbercources.library.dto.GenericDto;
+import ru.sbercources.library.mapper.GenericMapper;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.service.GenericService;
 
 @RestController
-public abstract class GenericController<T extends GenericModel> {
+public abstract class GenericController<T extends GenericModel, N extends GenericDto> {
 
   private final GenericService<T> service;
-  protected GenericController(GenericService<T> service) {
+  private final GenericMapper<T, N> mapper;
+  protected GenericController(GenericService<T> service, GenericMapper<T, N> mapper) {
     this.service = service;
+    this.mapper = mapper;
   }
 
   @Operation(description = "Получить список всех записей", method = "GetAll")
   @GetMapping("/list")
   public ResponseEntity<?> getAll() {
-    return ResponseEntity.ok().body(service.listAll());
+    return ResponseEntity.ok().body(service.listAll().stream().map(mapper::toDto));
   }
 
   @Operation(description = "Получить запись по id", method = "GetOne")

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDto extends GenericDto{
 
   private Long id;
   private RoleDto role;
