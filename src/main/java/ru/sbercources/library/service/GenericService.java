@@ -16,7 +16,7 @@ public abstract class GenericService<T extends GenericModel> {
 
   //Инжектим абстрактный репозиторий для работы с базой данных
   private final GenericRepository<T> repository;
-
+  @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
   protected GenericService(GenericRepository<T> repository) {
     this.repository = repository;
   }

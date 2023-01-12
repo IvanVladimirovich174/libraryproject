@@ -32,4 +32,5 @@ public class BookService extends GenericService<Book> {
         title
     );
   }
+
 }

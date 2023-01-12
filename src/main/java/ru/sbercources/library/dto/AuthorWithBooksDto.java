@@ -2,7 +2,6 @@ package ru.sbercources.library.dto;
 
 import java.util.Set;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,12 +10,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class AuthorDto extends GenericDto {
+public class AuthorWithBooksDto extends AuthorDto {
 
-  private String authorFIO;
-  private String lifePeriod;
-  private String description;
-  private Set<Long> booksIds;
+  private Set<BookDto> books;
 
 }
