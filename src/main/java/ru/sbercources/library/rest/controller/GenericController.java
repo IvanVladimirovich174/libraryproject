@@ -1,6 +1,7 @@
 package ru.sbercources.library.rest.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,27 +28,27 @@ public abstract class GenericController<T extends GenericModel, N extends Generi
 
   @Operation(description = "Получить список всех записей", method = "GetAll")
   @GetMapping("/list")
-  public ResponseEntity<?> getAll() {
-    return ResponseEntity.ok().body(service.listAll().stream().map(mapper::toDto));
+  public ResponseEntity<List<N>> getAll() {
+    return ResponseEntity.ok().body(service.listAll().stream().map(mapper::toDto).toList());
   }
 
   @Operation(description = "Получить запись по id", method = "GetOne")
   @GetMapping("/{id}")
-  public ResponseEntity<?> getById(@PathVariable Long id) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.getOne(id));
+  public ResponseEntity<N> getById(@PathVariable Long id) {
+    return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(service.getOne(id)));
   }
 
   @Operation(description = "Создать запись", method = "Create")
   @PostMapping
-  public ResponseEntity<?> create(@RequestBody T object) {
-    return ResponseEntity.status(HttpStatus.OK).body(service.create(object));
+  public ResponseEntity<N> create(@RequestBody N object) {
+    return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(service.create(mapper.toEntity(object))));
   }
 
   @Operation(description = "Обновить запись", method = "Update")
   @PutMapping("/{id}")
-  public ResponseEntity<?> update(@RequestBody T object, @PathVariable Long id) {
+  public ResponseEntity<N> update(@RequestBody N object, @PathVariable Long id) {
     object.setId(id);
-    return ResponseEntity.status(HttpStatus.OK).body(service.update(object));
+    return ResponseEntity.status(HttpStatus.OK).body(mapper.toDto(service.update(mapper.toEntity(object))));
   }
 
   @Operation(description = "Удалить запись", method = "Delete")

@@ -10,7 +10,7 @@ import ru.sbercources.library.model.GenericModel;
 @Component
 public abstract class GenericMapper<E extends GenericModel, D extends GenericDto> implements Mapper<E, D> {
 
-  private final ModelMapper mapper;
+  protected final ModelMapper mapper;
   private final Class<E> entityClass;
   private final Class<D> dtoClass;
 

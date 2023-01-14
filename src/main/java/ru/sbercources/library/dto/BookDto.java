@@ -23,6 +23,5 @@ public class BookDto extends GenericDto {
   private String storagePlace;
   private Integer amount;
   private String publishYear;
-
   private Set<Long> authorsIds;
 }
