@@ -12,7 +12,8 @@ import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.repository.BookRepository;
 
 @Component
-public class AuthorMapper extends GenericMapper<Author, AuthorDto>{
+public class AuthorMapper extends GenericMapper<Author, AuthorDto> {
+
   private final ModelMapper mapper;
   private final BookRepository bookRepository;
 
@@ -32,12 +33,16 @@ public class AuthorMapper extends GenericMapper<Author, AuthorDto>{
 
   @Override
   void mapSpecificFields(AuthorDto source, Author destination) {
-    destination.setBooks(bookRepository.findAllByIdIn(source.getBooksIds()));
+    if (!Objects.isNull(source.getBooksIds())) {
+      destination.setBooks(bookRepository.findAllByIdIn(source.getBooksIds()));
+    } else {
+      destination.setBooks(null);
+    }
   }
 
   @Override
   void mapSpecificFields(Author source, AuthorDto destination) {
-    destination.setBooksIds(getIds(source));
+//    destination.setBooksIds(getIds(source));
   }
 
   private Set<Long> getIds(Author author) {
