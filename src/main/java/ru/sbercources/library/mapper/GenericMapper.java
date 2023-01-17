@@ -1,5 +1,6 @@
 package ru.sbercources.library.mapper;
 
+import java.util.List;
 import java.util.Objects;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -28,10 +29,20 @@ public abstract class GenericMapper<E extends GenericModel, D extends GenericDto
   }
 
   @Override
+  public List<E> toEntities(List<D> dtos) {
+    return dtos.stream().map(this::toEntity).toList();
+  }
+
+  @Override
   public D toDto(E entity) {
     return Objects.isNull(entity)
         ? null
         : mapper.map(entity, dtoClass);
+  }
+
+  @Override
+  public List<D> toDtos(List<E> entities) {
+    return entities.stream().map(this::toDto).toList();
   }
 
   Converter<D, E> toEntityConverter() {
