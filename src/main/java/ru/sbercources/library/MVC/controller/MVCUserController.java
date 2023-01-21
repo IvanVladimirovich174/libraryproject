@@ -1,38 +1,39 @@
 package ru.sbercources.library.MVC.controller;
 
 import io.swagger.v3.oas.annotations.Hidden;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import ru.sbercources.library.model.User;
-import ru.sbercources.library.repository.UserRepository;
+import ru.sbercources.library.dto.UserDto;
+import ru.sbercources.library.mapper.UserMapper;
+import ru.sbercources.library.service.UserService;
 
 @Slf4j
 @Hidden
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class MVCUserController {
 
-  private final UserRepository userRepository;
+  private final UserService service;
+  private final UserMapper mapper;
 
-  public MVCUserController(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  public MVCUserController(UserService service, UserMapper mapper) {
+    this.service = service;
+    this.mapper = mapper;
   }
 
-  @ResponseBody
-  @GetMapping("/list") //localhoht:9090/user/list
-  public List<User> list() {
-    return userRepository.findAll();
+  @GetMapping("/registration")
+  public String registration() {
+    return "registration";
   }
 
-  @ResponseBody
-  @GetMapping("/{id}") //localhoht:9090/user/1
-  public User getById(@PathVariable Long id) {
-    return userRepository.findById(id).orElseThrow();
+  @PostMapping("/registration")
+  public String registration(@ModelAttribute("userForm") UserDto userDto) {
+    service.create(mapper.toEntity(userDto));
+    return "redirect:login";
   }
 }
