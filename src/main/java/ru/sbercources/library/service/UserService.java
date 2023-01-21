@@ -23,7 +23,15 @@ public class UserService extends GenericService<User> {
 
   @Override
   public User create(User user) {
+    user.setCreatedBy("REGISTRATION");
     user.setRole(roleService.getOne(1L));
+    user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    return repository.save(user);
+  }
+
+  public User createLibrarian(User user) {
+    user.setCreatedBy("ADMIN");
+    user.setRole(roleService.getOne(2L));
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     return repository.save(user);
   }

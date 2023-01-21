@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         .disable()
         .authorizeRequests()
         //Страницы доступные всем
-        .antMatchers("/login", "/users/registration", "/users/remember-password", "/users/change-password/**")
+        .antMatchers("/login", "/users/registration", "/users/remember-password", "/users/change-password/**", "swagger-ui.html")
         .permitAll()
         .and()
         .authorizeRequests()
@@ -37,6 +37,7 @@ public class WebSecurityConfig {
         .permitAll()
         //Все остальные страницы требуют аутентификации
         .antMatchers("/authors/**").hasAnyRole("ADMIN", "USER", "LIBRARIAN") // /authors/ доступен всем указанным ролям
+        .antMatchers("/books/**").hasAnyRole("ADMIN", "USER", "LIBRARIAN") // /authors/ доступен всем указанным ролям
         .anyRequest().authenticated()
         .and()
         //Настройка для входа в систему

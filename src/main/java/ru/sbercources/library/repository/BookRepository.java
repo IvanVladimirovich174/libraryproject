@@ -11,4 +11,5 @@ public interface BookRepository extends GenericRepository<Book> {
 
   List<Book> findAllByGenreOrTitle(Genre genre, String title);
   Set<Book> findAllByIdIn(Set<Long> ids);
+  List<Book> findAllByTitle(String title);
 }

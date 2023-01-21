@@ -10,21 +10,18 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div sec:authorize="isAuthenticated()" class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul  class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-link active">
             <a class="nav-link active" aria-current="page" href="/books">Книги</a>
           </li>
           <li class="nav-link active">
             <a class="nav-link active" aria-current="page" href="/authors">Авторы</a>
           </li>
-          <li class="nav-link active">
-            <a class="nav-link active" aria-current="page" href="/profile">Профиль</a>
-          </li>
         </ul>
         <a class="nav-link active" style="float: right" href="">Профиль</a>
 
-        <form sec:authorize="isAuthenticated()" class="d-flex">
+        <form class="d-flex">
           <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Выйти</a>
         </form>
       </div>
