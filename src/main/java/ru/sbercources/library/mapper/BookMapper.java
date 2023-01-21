@@ -32,7 +32,12 @@ public class BookMapper extends GenericMapper<Book, BookDto> {
 
   @Override
   void mapSpecificFields(BookDto source, Book destination) {
-    destination.setAuthors(authorRepository.findAllByIdIn(source.getAuthorsIds()));
+    if (!Objects.isNull(source.getAuthorsIds())) {
+      destination.setAuthors(authorRepository.findAllByIdIn(source.getAuthorsIds()));
+    } else {
+      destination.setAuthors(null);
+
+    }
   }
 
   @Override
