@@ -80,8 +80,13 @@ public class MVCAuthorController {
   }
 
   @PostMapping("/search")
-  public String searchByAuthorFIO(@ModelAttribute("searchAuthors") AuthorDto authorDto, Model model) {
-    model.addAttribute("authors", mapper.toDtos(service.searchByAuthorFIO(authorDto.getAuthorFIO())));
+  public String searchByAuthorFIO(Model model, @ModelAttribute("searchAuthors") AuthorDto authorDto) {
+    //TODO рассказать в субботу
+    if (authorDto.getAuthorFIO().trim().equals("")) {
+      model.addAttribute("authors", mapper.toDtos(service.listAll()));
+    } else {
+      model.addAttribute("authors", service.searchByAuthorFIO(authorDto.getAuthorFIO()));
+    }
     return "authors/viewAllAuthors";
   }
 

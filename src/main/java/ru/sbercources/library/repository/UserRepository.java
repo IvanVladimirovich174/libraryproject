@@ -17,4 +17,6 @@ public interface UserRepository extends GenericRepository<User> {
   """)
   List<User> findAllByCreatedBy(@Param(value = "createdBy") String createdBy);
 
+  User findUserByLogin(String login);
+
 }
