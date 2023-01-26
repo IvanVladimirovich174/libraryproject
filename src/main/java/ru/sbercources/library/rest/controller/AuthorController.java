@@ -3,8 +3,12 @@ package ru.sbercources.library.rest.controller;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.sbercources.library.dto.AddBookDto;
 import ru.sbercources.library.dto.AuthorDto;
 import ru.sbercources.library.dto.AuthorWithBooksDto;
 import ru.sbercources.library.mapper.AuthorMapper;
@@ -30,5 +34,10 @@ public class AuthorController extends GenericController<Author, AuthorDto> {
   @GetMapping("/author-books")
   public List<AuthorWithBooksDto> getAuthorsWithBooks() {
     return service.listAll().stream().map(authorWithBooksMapper::toDto).toList();
+  }
+
+  @PostMapping("/add-book")
+  public AuthorDto addBook(@RequestBody AddBookDto addBookDto) {
+    return authorWithBooksMapper.toDto(service.addBook(addBookDto));
   }
 }

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.sbercources.library.model.Book;
+import ru.sbercources.library.model.User;
 
 @Getter
 @Setter
@@ -19,5 +21,7 @@ public class PublishDto extends GenericDto {
   private Integer amount;
   private Long bookId;
   private Long userId;
+  private BookDto book;
+  private UserDto user;
 
 }

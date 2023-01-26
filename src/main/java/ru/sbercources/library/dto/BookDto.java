@@ -16,7 +16,6 @@ import ru.sbercources.library.model.Genre;
 @AllArgsConstructor
 public class BookDto extends GenericDto {
 
-  private Long id;
   private String downloadLink;
   private String title;
   private Genre genre;
