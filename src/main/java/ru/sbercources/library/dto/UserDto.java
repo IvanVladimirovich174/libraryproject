@@ -14,7 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDto extends GenericDto{
 
-  private Long id;
   private RoleDto role;
   private String firstName;
   private String lastName;

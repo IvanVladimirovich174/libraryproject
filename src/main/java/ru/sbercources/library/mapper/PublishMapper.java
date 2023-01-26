@@ -25,9 +25,9 @@ public class PublishMapper extends GenericMapper<Publish, PublishDto> {
     super.mapper.createTypeMap(Publish.class, PublishDto.class)
         .addMappings(m -> m.skip(PublishDto::setUserId)).setPostConverter(toDtoConverter())
         .addMappings(m -> m.skip(PublishDto::setBookId)).setPostConverter(toDtoConverter());
-    super.mapper.createTypeMap(PublishDto.class, Publish.class)
-        .addMappings(m -> m.skip(Publish::setUser)).setPostConverter(toEntityConverter())
-        .addMappings(m -> m.skip(Publish::setBook)).setPostConverter(toEntityConverter());
+//    super.mapper.createTypeMap(PublishDto.class, Publish.class)
+//        .addMappings(m -> m.skip(Publish::setUser)).setPostConverter(toEntityConverter())
+//        .addMappings(m -> m.skip(Publish::setBook)).setPostConverter(toEntityConverter());
   }
 
   @Override

@@ -1,5 +1,6 @@
 package ru.sbercources.library.mapper;
 
+import java.util.Collection;
 import java.util.List;
 import ru.sbercources.library.dto.GenericDto;
 import ru.sbercources.library.model.GenericModel;

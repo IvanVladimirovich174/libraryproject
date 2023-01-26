@@ -18,18 +18,20 @@ import ru.sbercources.library.service.BookService;
 public class BookController extends GenericController<Book, BookDto> {
 
   private final BookService service;
+  private final BookMapper mapper;
 
   public BookController(BookService service, BookMapper mapper) {
     super(service, mapper);
+    this.mapper = mapper;
     this.service = service;
   }
 
   @GetMapping("/search")
-  public List<Book> search(
+  public List<BookDto> search(
       @RequestParam(value = "title", required = false) String title,
       @RequestParam(value = "genre", required = false) Genre genre
   ) {
-    return service.search(title, genre);
+    return mapper.toDtos(service.search(title, genre));
   }
 
 }

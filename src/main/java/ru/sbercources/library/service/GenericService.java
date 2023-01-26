@@ -2,6 +2,7 @@ package ru.sbercources.library.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.repository.GenericRepository;
 
@@ -26,7 +27,7 @@ public abstract class GenericService<T extends GenericModel> {
   }
 
   public T getOne(Long id) {
-    return repository.findById(id).orElseThrow();
+    return repository.findById(id).orElseThrow(() -> new NotFoundException("Row with such ID: " + id + " not found"));
   }
 
   public T create(T object) {

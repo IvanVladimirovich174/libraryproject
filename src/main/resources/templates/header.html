@@ -19,7 +19,9 @@
             <a class="nav-link active" aria-current="page" href="/authors">Авторы</a>
           </li>
         </ul>
-        <a class="nav-link active" style="float: right" href="">Профиль</a>
+        <div  sec:authorize="isAuthenticated() && !hasRole('ADMIN')" >
+          <a  class="nav-link active" style="float: right" th:href="'/users/profile/' + ${#authentication.getPrincipal().getUserId()}">Профиль</a>
+        </div>
 
         <form class="d-flex">
           <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Выйти</a>
