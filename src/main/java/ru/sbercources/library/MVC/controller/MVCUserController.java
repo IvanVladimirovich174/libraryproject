@@ -33,6 +33,7 @@ public class MVCUserController {
 
   @PostMapping("/registration")
   public String registration(@ModelAttribute("userForm") UserDto userDto) {
+    System.out.println(userDto);
     service.create(mapper.toEntity(userDto));
     return "redirect:login";
   }

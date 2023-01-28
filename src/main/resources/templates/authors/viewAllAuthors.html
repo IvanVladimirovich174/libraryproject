@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
   <meta charset="UTF-8">
@@ -18,6 +19,7 @@
           class="btn btn-secondary"
           role="button"
           style="float: right"
+          sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))"
           aria-disabled="true">Добавить автора</a>
     </div>
   </div>
@@ -55,8 +57,12 @@
       <td th:text="${author.lifePeriod}"></td>
       <td th:text="${author.description}"></td>
       <td>
-        <a style="float: right" class="btn btn-danger ms-1" th:href="'/authors/delete/' + ${author.id}">Удалить</a>
-        <a style="float: right" class="btn btn-warning" th:href="'/authors/update/' + ${author.id}">Обновить</a>
+        <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">
+          <a style="float: right" class="btn btn-danger ms-1" th:href="'/authors/delete/' + ${author.id}">Удалить</a>
+          <a style="float: right" class="btn btn-warning ms-1" th:href="'/authors/update/' + ${author.id}">Обновить</a>
+          <a style="float: right" class="btn btn-success" th:href="'/authors/add-book/' + ${author.id}">Добавить книгу</a>
+        </div>
+        <a style="float: right" class="btn btn-success" th:href="'/authors/' + ${author.id}">Просмотреть</a>
       </td>
     </tr>
     </tbody>
