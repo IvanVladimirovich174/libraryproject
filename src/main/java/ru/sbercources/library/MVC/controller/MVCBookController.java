@@ -16,10 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sbercources.library.dto.BookDto;
-import ru.sbercources.library.dto.BookDto;
-import ru.sbercources.library.mapper.AuthorMapper;
+import ru.sbercources.library.dto.BookWithAuthorsDto;
 import ru.sbercources.library.mapper.BookMapper;
-import ru.sbercources.library.model.Author;
+import ru.sbercources.library.mapper.BookWithAuthorsMapper;
 import ru.sbercources.library.model.Book;
 import ru.sbercources.library.service.BookService;
 
@@ -29,10 +28,12 @@ import ru.sbercources.library.service.BookService;
 public class MVCBookController {
 
   private final BookService service;
+  private final BookWithAuthorsMapper bookWithAuthorsMapper;
   private final BookMapper mapper;
 
-  public MVCBookController(BookService service, BookMapper mapper) {
+  public MVCBookController(BookService service, BookWithAuthorsMapper bookWithAuthorsMapper, BookMapper mapper) {
     this.service = service;
+    this.bookWithAuthorsMapper = bookWithAuthorsMapper;
     this.mapper = mapper;
   }
 
@@ -42,11 +43,11 @@ public class MVCBookController {
       @RequestParam(value = "size", defaultValue = "5") int pageSize,
       Model model
   ) {
-    PageRequest pageRequest = PageRequest.of(page-1, pageSize, Sort.by(Direction.ASC, "title"));
+    PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Direction.ASC, "title"));
     Page<Book> authorPage = service.listAllPaginated(pageRequest);
-    List<BookDto> bookDtos = authorPage
+    List<BookWithAuthorsDto> bookDtos = authorPage
         .stream()
-        .map(mapper::toDto)
+        .map(bookWithAuthorsMapper::toDto)
         .toList();
     model.addAttribute("books", new PageImpl<>(bookDtos, pageRequest, authorPage.getTotalElements()));
     return "books/viewAllBooks";
@@ -71,7 +72,7 @@ public class MVCBookController {
 
   @GetMapping("/update/{id}")
   public String update(@PathVariable Long id, Model model) {
-    model.addAttribute("book", mapper.toDto(service.getOne(id)));
+    model.addAttribute("book", bookWithAuthorsMapper.toDto(service.getOne(id)));
     return "books/updateBook"; //путь до html файла
   }
 
@@ -84,9 +85,9 @@ public class MVCBookController {
   @PostMapping("/search")
   public String searchByAuthorFIO(Model model, @ModelAttribute("searchAuthors") BookDto bookDto) {
     if (bookDto.getTitle().trim().equals("")) {
-      model.addAttribute("books", mapper.toDtos(service.listAll()));
+      model.addAttribute("books", bookWithAuthorsMapper.toDtos(service.listAll()));
     } else {
-      model.addAttribute("books", service.searchByTitle(bookDto.getTitle()));
+      model.addAttribute("books", bookWithAuthorsMapper.toDtos(service.searchByTitle(bookDto.getTitle())));
     }
     return "books/viewAllBooks";
   }

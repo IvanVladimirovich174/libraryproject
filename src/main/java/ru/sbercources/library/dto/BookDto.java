@@ -2,6 +2,7 @@ package ru.sbercources.library.dto;
 
 import java.time.LocalDate;
 import java.util.Set;
+import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

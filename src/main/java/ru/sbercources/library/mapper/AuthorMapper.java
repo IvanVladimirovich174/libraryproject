@@ -42,7 +42,7 @@ public class AuthorMapper extends GenericMapper<Author, AuthorDto> {
 
   @Override
   void mapSpecificFields(Author source, AuthorDto destination) {
-//    destination.setBooksIds(getIds(source));
+    destination.setBooksIds(getIds(source));
   }
 
   private Set<Long> getIds(Author author) {

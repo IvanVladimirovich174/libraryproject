@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     this.bCryptPasswordEncoder = bCryptPasswordEncoder;
   }
 
-//  Конфигурация прав доступа пользоватлея
+  //  Конфигурация прав доступа пользоватлея
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf()
@@ -35,9 +35,19 @@ public class WebSecurityConfig {
         .authorizeRequests()
         .antMatchers("/resources/**")
         .permitAll()
-        //Все остальные страницы требуют аутентификации
-        .antMatchers("/authors/**").hasAnyRole("ADMIN", "USER", "LIBRARIAN") // /authors/ доступен всем указанным ролям
-        .antMatchers("/books/**").hasAnyRole("ADMIN", "USER", "LIBRARIAN") // /authors/ доступен всем указанным ролям
+        .antMatchers(
+            "/authors/add",
+            "/authors/update/*",
+            "/authors/add-book/*",
+            "/authors/delete/*")
+        .not().hasRole("USER") //  недоступны пользователю
+        .antMatchers(
+            "/books/add",
+            "/books/update/*",
+            "/books/delete/*") //  недоступны пользователю
+        .not().hasRole("USER")
+        .antMatchers("/authors/**").authenticated() // /authors/ доступен всем указанным ролям
+        .antMatchers("/books/**").authenticated() // /books/ доступен всем указанным ролям
         .anyRequest().authenticated()
         .and()
         //Настройка для входа в систему

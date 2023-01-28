@@ -1,5 +1,7 @@
 package ru.sbercources.library.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import javax.persistence.Column;
@@ -63,6 +65,9 @@ public class User extends GenericModel {
 
   @OneToMany(mappedBy = "user")
   private Set<Publish> publish;
+
+  @Column(name = "date_birth")
+  private Date birthDate;
 
   @Override
   public String toString() {
