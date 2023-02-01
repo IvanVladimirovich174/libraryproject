@@ -1,5 +1,6 @@
 package ru.sbercources.library.rest.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import ru.sbercources.library.service.GenericService;
 @Slf4j
 @RestController
 @RequestMapping("/rest/author")
+@SecurityRequirement(name = "Bearer Authentication")
 public class AuthorController extends GenericController<Author, AuthorDto> {
 
   private final AuthorService service;
