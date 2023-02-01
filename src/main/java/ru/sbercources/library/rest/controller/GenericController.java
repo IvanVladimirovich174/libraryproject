@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.service.GenericService;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public abstract class GenericController<T extends GenericModel, N extends GenericDto> {
 
   private final GenericService<T> service;
@@ -29,7 +31,7 @@ public abstract class GenericController<T extends GenericModel, N extends Generi
   @Operation(description = "Получить список всех записей", method = "GetAll")
   @GetMapping("/list")
   public ResponseEntity<List<N>> getAll() {
-    return ResponseEntity.ok().body(service.listAll().stream().map(mapper::toDto).toList());
+    return ResponseEntity.ok().body(mapper.toDtos(service.listAll()));
   }
 
   @Operation(description = "Получить запись по id", method = "GetOne")

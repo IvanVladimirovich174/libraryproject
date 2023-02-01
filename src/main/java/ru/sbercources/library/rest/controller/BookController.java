@@ -1,5 +1,6 @@
 package ru.sbercources.library.rest.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

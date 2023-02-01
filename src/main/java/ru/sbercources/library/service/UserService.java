@@ -3,6 +3,7 @@ package ru.sbercources.library.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.sbercources.library.dto.LoginDto;
 import ru.sbercources.library.model.User;
 import ru.sbercources.library.repository.UserRepository;
 
@@ -34,5 +35,13 @@ public class UserService extends GenericService<User> {
     user.setRole(roleService.getOne(2L));
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     return repository.save(user);
+  }
+
+  public User getByLogin(String login) {
+    return repository.findUserByLogin(login);
+  }
+
+  public boolean checkPassword(LoginDto loginDto) {
+    return bCryptPasswordEncoder.matches(loginDto.getPassword(), getByLogin(loginDto.getLogin()).getPassword());
   }
 }
