@@ -7,49 +7,35 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtil {
 
   private static final ObjectMapper objectMapper = getDefaultObjectMapper();
-  private static final long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60; //1 неделя жизни токена
-  private final String secret = "zdtlD3JK56m6wTTgsNFhqzjqP";
-
-  public String generateToken(UserDetails userDetails) {
-    Map<String, Object> claims = new HashMap<>();
-    return doGenerateToken(claims, userDetails.toString());
-  }
 
   private static ObjectMapper getDefaultObjectMapper() {
     return new ObjectMapper();
   }
 
-  private String doGenerateToken(Map<String, Object> claims, String subject) {
-    return Jwts.builder()
-//        .setClaims(claims)
-        .setSubject(subject)
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
-        .signWith(SignatureAlgorithm.HS256, secret)
-        .compact();
-  }
+  public static final long JWT_TOKEN_VALIDITY = 7 * 24 * 60 * 60; //1 неделя
+  private final String secret = "zdtlD3JK56m6wTTgsNFhqzjqP";
 
-  public String getUsernameFromToken(String token) {
+  public String getUserNameFromToken(String token) {
     String subject = getClaimsFromToken(token, Claims::getSubject);
-    JsonNode subjectJson = null;
+    JsonNode subjectJSON = null;
     try {
-      subjectJson = objectMapper.readTree(subject);
+      subjectJSON = objectMapper.readTree(subject);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
     }
 
-    if(subjectJson != null) {
-      return subjectJson.get("username").asText();
+    if(subjectJSON != null) {
+      return subjectJSON.get("username").asText();
     } else {
       return null;
     }
@@ -62,5 +48,32 @@ public class JwtTokenUtil {
 
   private Claims getAllClaimsFromToken(String token) {
     return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+  }
+
+  public String generateToken(UserDetails userDetails) {
+    return doGenerateToken(userDetails.toString());
+  }
+
+  private String doGenerateToken(String subject) {
+    return Jwts.builder()
+        .setSubject(subject)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
+        .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+        .signWith(SignatureAlgorithm.HS512, secret)
+        .compact();
+  }
+
+  public boolean validateToken(String token, UserDetails userDetails) {
+    final String username = getUserNameFromToken(token);
+    return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+  }
+
+  private boolean isTokenExpired(String token) {
+    final Date expiration = getExpirationDateFromToken(token);
+    return expiration.before(new Date());
+  }
+
+  private Date getExpirationDateFromToken(String token) {
+    return getClaimsFromToken(token, Claims::getExpiration);
   }
 }

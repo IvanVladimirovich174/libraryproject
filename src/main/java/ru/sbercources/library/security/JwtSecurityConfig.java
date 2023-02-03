@@ -48,7 +48,8 @@ public class JwtSecurityConfig
         .cors().and()
         .csrf().disable()
         //включаем базовую авторизацию
-        .httpBasic().disable()
+        .httpBasic()
+        .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()

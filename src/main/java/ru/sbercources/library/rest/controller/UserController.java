@@ -39,14 +39,10 @@ public class UserController extends GenericController<User, UserDto> {
   public ResponseEntity<?> auth(@RequestBody LoginDto loginDto) {
     Map<String, Object> response = new HashMap<>();
 
-    log.info(String.valueOf(service.checkPassword(loginDto)));
     if(!service.checkPassword(loginDto)) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized user!\nWrongPassword");
     }
-    log.info(loginDto.getLogin());
-    log.info(loginDto.getPassword());
     UserDetails foundUser = customUserDetailsService.loadUserByUsername(loginDto.getLogin());
-    log.info(foundUser.getPassword());
     String token = jwtTokenUtil.generateToken(foundUser);
     response.put("token", token);
     response.put("authorities", foundUser.getAuthorities());
