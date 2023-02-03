@@ -37,9 +37,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
       return;
     }
 
+
     token = header.split(" ")[1].trim();
     UserDetails userDetails;
-    userDetails = customUserDetailsService.loadUserByUsername(jwtTokenUtil.getUsernameFromToken(token));
+    userDetails = customUserDetailsService.loadUserByUsername(jwtTokenUtil.getUserNameFromToken(token));
+
+    //TODO рассказать про проверку
+    if(!jwtTokenUtil.validateToken(token, userDetails)) {
+      filterChain.doFilter(request, response);
+      return;
+    }
+
     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     SecurityContextHolder.getContext().setAuthentication(authentication);
     filterChain.doFilter(request, response);
