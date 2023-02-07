@@ -91,4 +91,10 @@ public class MVCBookController {
     }
     return "books/viewAllBooks";
   }
+
+  @GetMapping("/{id}")
+  public String getOne(@PathVariable Long id, Model model) {
+    model.addAttribute("book", bookWithAuthorsMapper.toDto(service.getOne(id)));
+    return "books/viewBook";
+  }
 }

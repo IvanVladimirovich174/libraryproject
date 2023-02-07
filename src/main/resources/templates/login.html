@@ -14,8 +14,11 @@
 <main class="content-wrapper m-auto">
   <div layout:fragment="content" class="container-fluid" style="margin-top: 4rem">
     <form method="POST" th:action="@{/login}">
+<!--      TODO описание ошибки-->
       <div th:if="${param.error}">
-        <div class="alert alert-danger">Неверный пароль!</div>
+        <div class="alert alert-danger">
+          <p th:text="${param.error}"></p>
+        </div>
       </div>
       <div class="form-group col-md-3 offset-md-4 m-auto">
         <p class="h2" style="text-align:center">Войти в систему</p>

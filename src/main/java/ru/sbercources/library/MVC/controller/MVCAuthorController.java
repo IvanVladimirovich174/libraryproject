@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.sbercources.library.dto.AddBookDto;
 import ru.sbercources.library.dto.AuthorDto;
 import ru.sbercources.library.mapper.AuthorMapper;
+import ru.sbercources.library.mapper.AuthorWithBooksMapper;
 import ru.sbercources.library.mapper.BookMapper;
 import ru.sbercources.library.model.Author;
 import ru.sbercources.library.service.AuthorService;
@@ -33,12 +33,14 @@ public class MVCAuthorController {
 
   private final BookService bookService;
   private final BookMapper bookMapper;
+  private final AuthorWithBooksMapper authorWithBooksMapper;
   private final AuthorService service;
   private final AuthorMapper mapper;
 
-  public MVCAuthorController(BookService bookService, BookMapper bookMapper, AuthorService service, AuthorMapper mapper) {
+  public MVCAuthorController(BookService bookService, BookMapper bookMapper, AuthorWithBooksMapper authorWithBooksMapper, AuthorService service, AuthorMapper mapper) {
     this.bookService = bookService;
     this.bookMapper = bookMapper;
+    this.authorWithBooksMapper = authorWithBooksMapper;
     this.service = service;
     this.mapper = mapper;
   }
@@ -127,6 +129,12 @@ public class MVCAuthorController {
   public String addBook(@ModelAttribute("authorBookForm") AddBookDto addBookDto) {
     service.addBook(addBookDto);
     return "redirect:/authors";
+  }
+
+  @GetMapping("/{id}")
+  public String getOne(@PathVariable Long id, Model model) {
+    model.addAttribute("author", authorWithBooksMapper.toDto(service.getOne(id)));
+    return "authors/viewAuthor";
   }
 
 }

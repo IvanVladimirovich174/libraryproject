@@ -6,6 +6,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Книги</title>
+  <style>
+    .book-link {
+      text-decoration: none;
+    }
+
+    .book-link:hover {
+      color: #001445;
+    }
+
+    .not-enough-book {
+      color: red;
+    }
+  </style>
 </head>
 <body>
 
@@ -58,10 +71,13 @@
     </thead>
     <tbody>
     <tr th:each="book : ${books}">
-      <td th:text="${book.title}"></td>
+      <td>
+        <a class="book-link" th:href="'/books/' + ${book.id}" th:text="${book.getTitle()}"></a>
+      </td>
       <td th:text="${book.genre.getGenreText()}"></td>
       <td th:text="${book.storagePlace}"></td>
-      <td th:text="${book.amount}"></td>
+      <td th:classappend="${book.getAmount() <= 0} ? 'not-enough-book'"
+          th:text="${book.amount} <= 0 ? 'Нет в наличии' : ${book.getAmount()}"></td>
       <td th:text="${book.publishYear}"></td>
       <td>
         <ul>
@@ -70,10 +86,11 @@
       </td>
       <td>
         <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">
-          <a style="float: right" class="btn btn-danger ms-1" th:href="'/books/delete/' + ${book.id}">Удалить</a>
-          <a style="float: right" class="btn btn-warning" th:href="'/books/update/' + ${book.id}">Обновить</a>
+          <a class="btn btn-danger ms-1" th:href="'/books/delete/' + ${book.id}">Удалить</a>
+          <a class="btn btn-warning" th:href="'/books/update/' + ${book.id}">Обновить</a>
         </div>
-        <a style="float: right" class="btn btn-success" th:href="'/books/' + ${book.id}">Просмотреть</a>
+        <a class="btn btn-success" th:href="'/books/' + ${book.id}">Просмотреть</a>
+        <a th:if="${book.getAmount() > 0}" sec:authorize="!hasRole('ADMIN')" class="btn btn-success" th:href="'/publish/get-book/' + ${book.id}">Взять книгу</a>
       </td>
     </tr>
     </tbody>

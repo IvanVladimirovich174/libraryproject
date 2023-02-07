@@ -58,14 +58,14 @@ public class AuthorService extends GenericService<Author> {
         .toList();
 
     if (bookIds.isEmpty()) {
-      throw new OpenApiResourceNotFoundException("У данного актера нету фильма где он снимался один.");
+      throw new OpenApiResourceNotFoundException("У данного автора нет книги где он один.");
     }
     bookIds.stream()
         .filter(i -> {
           if (publishRepository.findPublishByBookId(i).isEmpty()) {
             return true;
           } else {
-            throw new OpenApiResourceNotFoundException("Фильм с данным актерем в данный момент арендован");
+            throw new OpenApiResourceNotFoundException("Книга с данным автором в данный момент арендована");
           }
         })
         .forEach(i -> {
