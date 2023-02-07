@@ -95,14 +95,25 @@ public class MVCAuthorController {
   }
 
   @PostMapping("/search")
-  public String searchByAuthorFIO(Model model, @ModelAttribute("searchAuthors") AuthorDto authorDto) {
+  public String searchByAuthorFIO(
+      @RequestParam(value = "page", defaultValue = "1") int page,
+      @RequestParam(value = "size", defaultValue = "10") int pageSize,
+      Model model, @ModelAttribute("searchAuthors") AuthorDto authorDto
+  ) {
     if (authorDto.getAuthorFIO().trim().equals("")) {
       model.addAttribute("authors", mapper.toDtos(service.listAll()));
     } else {
-      model.addAttribute("authors", service.searchByAuthorFIO(authorDto.getAuthorFIO()));
+      PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Direction.ASC, "authorFIO"));
+      Page<Author> authorPage = service.searchByAuthorFIO(pageRequest, authorDto.getAuthorFIO());
+      List<AuthorDto> authorDtos = authorPage
+          .stream()
+          .map(mapper::toDto)
+          .toList();
+      model.addAttribute("authors", new PageImpl<>(authorDtos, pageRequest, authorPage.getTotalElements()));
     }
     return "authors/viewAllAuthors";
   }
+
 
   @GetMapping("/add-book/{authorId}")
   public String addBook(Model model, @PathVariable Long authorId) {

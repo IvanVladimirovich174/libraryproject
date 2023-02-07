@@ -30,10 +30,9 @@ public class AuthorService extends GenericService<Author> {
     this.publishRepository = publishRepository;
   }
 
-  public List<Author> searchByAuthorFIO(String fio) {
-    return authorRepository.findAllByAuthorFIO(fio);
+  public Page<Author> searchByAuthorFIO(Pageable pageable, String fio) {
+    return authorRepository.findAllByAuthorFIO(pageable, fio);
   }
-
   public Page<Author> listAllPaginated(Pageable pageable) {
     return authorRepository.findAll(pageable);
   }
