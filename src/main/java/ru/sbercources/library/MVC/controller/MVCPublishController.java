@@ -69,5 +69,11 @@ public class MVCPublishController {
     return "userBooks/viewAllUserBooks";
   }
 
+  @GetMapping("/return-book/{id}")
+  public String returnBook(@PathVariable Long id) {
+    service.returnBook(id);
+    return "redirect:/publish/user-books/" + service.getOne(id).getUser().getId();
+  }
+
 
 }

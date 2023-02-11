@@ -30,7 +30,7 @@
       <th scope="col">Книга</th>
       <th scope="col">Количество</th>
       <th scope="col">Дата взятия книги</th>
-      <th scope="col">Плановая дата возвращения</th>
+      <th scope="col">Дата возвращения</th>
       <th scope="col">Возвращена</th>
       <th scope="col">Период аренды</th>
       <th scope="col"></th>
@@ -46,13 +46,13 @@
           ${publish.rentDate.getMonthValue()} + '-' +
           ${publish.rentDate.getYear()}">
       </td>
-      <td th:if="${!publish.returned}" th:text="${publish.returnDate.getDayOfMonth()} + '-' + ${publish.returnDate.getMonthValue()} + '-' + ${publish.returnDate.getYear()}"></td>
-      <td th:if="${publish.returned}" style="color: red" th:text="${publish.returnDate}"></td>
+      <td th:if="${!publish.returned}" style="color: red" th:text="${publish.returnDate.getDayOfMonth()} + '-' + ${publish.returnDate.getMonthValue()} + '-' + ${publish.returnDate.getYear()} + ' (По плану)'"></td>
+      <td th:if="${publish.returned}"  th:text="${publish.returnDate.getDayOfMonth()} + '-' + ${publish.returnDate.getMonthValue()} + '-' + ${publish.returnDate.getYear()}"></td>
       <td th:text="${publish.returned} ? 'Да' : 'Нет'"></td>
       <td th:text="${publish.rentPeriod} + ' месяц(а)'"></td>
       <td>
 
-<!--        TODO доделать-->
+        <!--        TODO доделать-->
         <a
             th:if="!${publish.returned}"
             th:href="'/publish/return-book/' + ${publish.id}"
@@ -61,6 +61,7 @@
             aria-disabled="true">Вернуть книгу</a>
       </td>
     </tr>
+
     </tbody>
   </table>
 

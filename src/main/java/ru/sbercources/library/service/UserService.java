@@ -1,9 +1,13 @@
 package ru.sbercources.library.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.sbercources.library.dto.LoginDto;
+import ru.sbercources.library.model.Publish;
 import ru.sbercources.library.model.User;
 import ru.sbercources.library.repository.UserRepository;
 
@@ -43,5 +47,9 @@ public class UserService extends GenericService<User> {
 
   public boolean checkPassword(LoginDto loginDto) {
     return bCryptPasswordEncoder.matches(loginDto.getPassword(), getByLogin(loginDto.getLogin()).getPassword());
+  }
+
+  public Page<User> listAllPaginated(Pageable pageable) {
+    return repository.findAll(pageable);
   }
 }

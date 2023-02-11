@@ -56,4 +56,14 @@ public class PublishService extends GenericService<Publish> {
   public List<Publish> getUserPublishing(Long userId) {
     return (List<Publish>) userService.getOne(userId).getPublish();
   }
+
+  public void returnBook(Long id) {
+    Publish publish = getOne(id);
+    publish.setReturned(true);
+    publish.setReturnDate(LocalDateTime.now());
+    Book book = publish.getBook();
+    book.setAmount(book.getAmount() + publish.getAmount());
+    update(publish);
+    bookService.update(book);
+  }
 }
