@@ -48,6 +48,7 @@
       <th>ФИО</th>
       <th>Годы жизни</th>
       <th>Биография</th>
+      <th sec:authorize="hasRole('ADMIN') || hasRole('LIBRARIAN')" scope="col">Статус</th>
       <th></th>
     </tr>
     </thead>
@@ -56,13 +57,17 @@
       <td th:text="${author.authorFIO}"></td>
       <td th:text="${author.lifePeriod}"></td>
       <td th:text="${author.description}"></td>
-      <td>
+      <td sec:authorize="hasRole('ADMIN') || hasRole('LIBRARIAN')" th:text="${author.isDeleted() ? 'Удалена' : 'Активна'}"></td>
+      <td style="text-align: right">
         <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">
-          <a style="float: right" class="btn btn-danger ms-1" th:href="'/authors/delete/' + ${author.id}">Удалить</a>
-          <a style="float: right" class="btn btn-warning ms-1" th:href="'/authors/update/' + ${author.id}">Обновить</a>
-          <a style="float: right" class="btn btn-success" th:href="'/authors/add-book/' + ${author.id}">Добавить книгу</a>
+          <a th:if="${!author.isDeleted()}" class="btn btn-danger mb-1" th:href="'/authors/block/' + ${author.id}">Заблокировать</a>
+          <a th:if="${author.isDeleted()}" class="btn btn-success mb-1" th:href="'/authors/unblock/' + ${author.id}">Разблокировать</a>
+          <br>
+          <a class="btn btn-warning mb-1" th:href="'/authors/update/' + ${author.id}">Обновить</a>
+          <br>
+          <a class="btn btn-success mb-1" th:href="'/authors/add-book/' + ${author.id}">Добавить книгу</a>
         </div>
-        <a style="float: right" class="btn btn-success" th:href="'/authors/' + ${author.id}">Просмотреть</a>
+        <a class="btn btn-success mb-1" th:href="'/authors/' + ${author.id}">Просмотреть</a>
       </td>
     </tr>
     </tbody>

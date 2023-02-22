@@ -3,6 +3,9 @@ package ru.sbercources.library.MVC.controller;
 import io.swagger.v3.oas.annotations.Hidden;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,6 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.sbercources.library.dto.PublishDto;
+import ru.sbercources.library.dto.RememberPasswordDto;
 import ru.sbercources.library.dto.UserDto;
 import ru.sbercources.library.mapper.UserMapper;
 import ru.sbercources.library.model.Publish;
@@ -56,10 +61,11 @@ public class MVCUserController {
   @GetMapping("/profile/{id}")
   public String getProfile(@PathVariable Integer id, Model model) {
     CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if(!id.equals(customUserDetails.getUserId())) {
-      return HttpStatus.FORBIDDEN.toString();
+    if(!Objects.isNull(customUserDetails.getUserId())) {
+      if (!id.equals(customUserDetails.getUserId())) {
+        return HttpStatus.FORBIDDEN.toString();
+      }
     }
-
     model.addAttribute("user", mapper.toDto(service.getOne(Long.valueOf(id))));
     return "profile/viewProfile";
   }
@@ -85,8 +91,7 @@ public class MVCUserController {
     foundedUser.setBirthDate(userDto.getBirthDate());
     foundedUser.setPhone(userDto.getPhone());
     foundedUser.setAddress(userDto.getAddress());
-    userDto = mapper.toDto(foundedUser);
-    service.update(mapper.toEntity(userDto));
+    service.update(foundedUser);
     return "redirect:/users/profile/" + userDto.getId();
   }
 
@@ -104,5 +109,61 @@ public class MVCUserController {
         .toList();
     model.addAttribute("users", new PageImpl<>(userDtos, pageRequest, userPage.getTotalElements()));
     return "users/viewAllUsers";
+  }
+
+  @GetMapping("/ban/{userId}")
+  public String banUser(@PathVariable Long userId) {
+    service.banUser(userId);
+    return "redirect:/users/list";
+  }
+
+  @GetMapping("/unban/{userId}")
+  public String unbanUser(@PathVariable Long userId) {
+    service.unbanUser(userId);
+    return "redirect:/users/list";
+  }
+
+  @GetMapping("/add-librarian")
+  public String createLibrarian(@ModelAttribute("userForm") UserDto userDto) {
+    return "users/addLibrarian";
+  }
+
+  @PostMapping("add-librarian")
+  public String createLibrarian(@ModelAttribute("userForm") @Valid UserDto userDto, BindingResult result) {
+    if (result.hasErrors()) {
+      return "/users/addLibrarian";
+    } else {
+      service.createLibrarian(mapper.toEntity(userDto));
+      return "redirect:/users/list";
+    }
+  }
+
+  @GetMapping("/remember-password")
+  public String rememberPassword() {
+    return "rememberPassword";
+  }
+
+  @PostMapping("/remember-password")
+  public String rememberPassword(@ModelAttribute("email")RememberPasswordDto rememberPasswordDto) {
+    UserDto userDto = mapper.toDto(service.getUserByEmail(rememberPasswordDto.getEmail()));
+    if(Objects.isNull(userDto)) {
+      return "redirect:/error-with-message?message=User not found";
+    } else {
+      service.sendChangePasswordEmail(userDto.getEmail());
+      return "redirect:/login";
+    }
+  }
+
+  @GetMapping("/change-password")
+  public String changePassword(@PathParam(value = "uuid") String uuid, Model model) {
+    model.addAttribute("uuid", uuid);
+    return "changePassword";
+  }
+
+
+  @PostMapping("/change-password")
+  public String changePassword(@PathParam(value = "uuid") String uuid, @ModelAttribute("changePasswordForm") UserDto userDto) {
+    service.changePassword(uuid, userDto.getPassword());
+    return "redirect:/login";
   }
 }

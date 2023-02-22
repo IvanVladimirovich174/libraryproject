@@ -69,6 +69,9 @@ public class User extends GenericModel {
   @Column(name = "date_birth")
   private Date birthDate;
 
+  @Column(name = "change_password_token")
+  private String changePasswordToken;
+
   @Override
   public String toString() {
     return "User{" +

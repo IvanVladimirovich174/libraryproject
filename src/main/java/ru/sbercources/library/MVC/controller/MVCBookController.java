@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import ru.sbercources.library.mapper.BookMapper;
 import ru.sbercources.library.mapper.BookWithAuthorsMapper;
 import ru.sbercources.library.model.Book;
 import ru.sbercources.library.service.BookService;
+import ru.sbercources.library.service.userDetails.CustomUserDetails;
 
 @Hidden
 @Controller
@@ -43,8 +46,14 @@ public class MVCBookController {
       @RequestParam(value = "size", defaultValue = "5") int pageSize,
       Model model
   ) {
+    CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Direction.ASC, "title"));
-    Page<Book> authorPage = service.listAllPaginated(pageRequest);
+    Page<Book> authorPage = null;
+    if(customUserDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+      authorPage = service.listAllPaginatedForUser(pageRequest);
+    } else {
+      authorPage = service.listAllPaginated(pageRequest);
+    }
     List<BookWithAuthorsDto> bookDtos = authorPage
         .stream()
         .map(bookWithAuthorsMapper::toDto)
@@ -77,8 +86,14 @@ public class MVCBookController {
   }
 
   @PostMapping("/update")
-  public String update(@ModelAttribute("authorForm") BookDto bookDto) {
-    service.update(mapper.toEntity(bookDto));
+  public String update(@ModelAttribute("bookForm") BookDto bookDto) {
+    Book book = service.getOne(bookDto.getId());
+    book.setTitle(book.getTitle());
+    book.setGenre(book.getGenre());
+    book.setAmount(book.getAmount());
+    book.setPublishYear(book.getPublishYear());
+    book.setStoragePlace(book.getStoragePlace());
+    service.update(book);
     return "redirect:/books";
   }
 
@@ -96,5 +111,17 @@ public class MVCBookController {
   public String getOne(@PathVariable Long id, Model model) {
     model.addAttribute("book", bookWithAuthorsMapper.toDto(service.getOne(id)));
     return "books/viewBook";
+  }
+
+  @GetMapping("/block/{id}")
+  public String blockBook(@PathVariable Long id) {
+    service.block(id);
+    return "redirect:/books";
+  }
+
+  @GetMapping("/unblock/{id}")
+  public String unblockBook(@PathVariable Long id) {
+    service.unblock(id);
+    return "redirect:/books";
   }
 }

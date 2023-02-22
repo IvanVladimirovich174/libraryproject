@@ -22,7 +22,7 @@
             <a class="nav-link active" aria-current="page" th:href="'/publish/user-books/' + ${#authentication.getPrincipal().getUserId()}">Мои книги</a>
           </li>
 
-          <li sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" class="nav-link active">
+          <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))" class="nav-link active">
             <a class="nav-link active" aria-current="page" th:href="'/users/list'">Пользователи</a>
           </li>
         </ul>

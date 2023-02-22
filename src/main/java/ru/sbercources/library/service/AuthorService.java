@@ -1,9 +1,12 @@
 package ru.sbercources.library.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.sbercources.library.dto.AddBookDto;
 import ru.sbercources.library.model.Author;
@@ -11,6 +14,7 @@ import ru.sbercources.library.model.Book;
 import ru.sbercources.library.repository.AuthorRepository;
 import ru.sbercources.library.repository.BookRepository;
 import ru.sbercources.library.repository.PublishRepository;
+import ru.sbercources.library.service.userDetails.CustomUserDetails;
 
 @Service
 public class AuthorService extends GenericService<Author> {
@@ -72,5 +76,27 @@ public class AuthorService extends GenericService<Author> {
           bookRepository.deleteById(i);
           authorRepository.deleteById(id);
         });
+  }
+
+  public void block(Long id) {
+    Author author = getOne(id);
+    author.setDeleted(true);
+    author.setDeletedBy(((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+    author.setDeletedWhen(LocalDateTime.now());
+    update(author);
+  }
+
+  public void unblock(Long id) {
+    Author author = getOne(id);
+    author.setDeleted(false);
+    author.setDeletedBy(null);
+    author.setDeletedWhen(null);
+    author.setUpdatedBy(((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+    author.setUpdatedWhen(LocalDateTime.now());
+    update(author);
+  }
+
+  public Page<Author> listAllPaginatedForUser(Pageable pageable) {
+    return authorRepository.findAllByIsDeletedFalse(pageable);
   }
 }

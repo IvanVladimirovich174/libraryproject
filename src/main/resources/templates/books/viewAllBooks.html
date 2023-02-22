@@ -25,7 +25,7 @@
 <div layout:fragment="content">
   <h1>Книги библиотеки</h1>
 
-<!-- TODO Доделать создание-->
+  <!-- TODO Доделать создание-->
   <div class="row">
     <div class="col">
       <a
@@ -66,6 +66,7 @@
       <th scope="col">Количество</th>
       <th scope="col">Год публикации</th>
       <th scope="col">Автор(ы)</th>
+      <th sec:authorize="hasRole('ADMIN') || hasRole('LIBRARIAN')" scope="col">Статус</th>
       <th scope="col"></th>
     </tr>
     </thead>
@@ -84,9 +85,11 @@
           <li th:each="author : ${book.authors}" th:text="${author.authorFIO}"></li>
         </ul>
       </td>
+      <td sec:authorize="hasRole('ADMIN') || hasRole('LIBRARIAN')" th:text="${book.isDeleted() ? 'Удалена' : 'Активна'}"></td>
       <td>
         <div sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('LIBRARIAN'))">
-          <a class="btn btn-danger ms-1" th:href="'/books/delete/' + ${book.id}">Удалить</a>
+          <a th:if="${!book.isDeleted()}" class="btn btn-danger ms-1" th:href="'/books/block/' + ${book.id}">Заблокировать</a>
+          <a th:if="${book.isDeleted()}" class="btn btn-success ms-1" th:href="'/books/unblock/' + ${book.id}">Разблокировать</a>
           <a class="btn btn-warning" th:href="'/books/update/' + ${book.id}">Обновить</a>
         </div>
         <a class="btn btn-success" th:href="'/books/' + ${book.id}">Просмотреть</a>

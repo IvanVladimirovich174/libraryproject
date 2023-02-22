@@ -8,6 +8,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,8 +25,10 @@ import ru.sbercources.library.mapper.AuthorMapper;
 import ru.sbercources.library.mapper.AuthorWithBooksMapper;
 import ru.sbercources.library.mapper.BookMapper;
 import ru.sbercources.library.model.Author;
+import ru.sbercources.library.model.Book;
 import ru.sbercources.library.service.AuthorService;
 import ru.sbercources.library.service.BookService;
+import ru.sbercources.library.service.userDetails.CustomUserDetails;
 
 @Controller
 @Slf4j
@@ -51,8 +55,14 @@ public class MVCAuthorController {
       @RequestParam(value = "size", defaultValue = "5") int pageSize,
       Model model
   ) {
+    CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Direction.ASC, "authorFIO"));
-    Page<Author> authorPage = service.listAllPaginated(pageRequest);
+    Page<Author> authorPage = null;
+    if(customUserDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+      authorPage = service.listAllPaginatedForUser(pageRequest);
+    } else {
+      authorPage = service.listAllPaginated(pageRequest);
+    }
     List<AuthorDto> authorDtos = authorPage
         .stream()
         .map(mapper::toDto)
@@ -92,7 +102,11 @@ public class MVCAuthorController {
 
   @PostMapping("/update")
   public String update(@ModelAttribute("authorForm") AuthorDto authorDto) {
-    service.update(mapper.toEntity(authorDto));
+    Author author = service.getOne(authorDto.getId());
+    author.setAuthorFIO(author.getAuthorFIO());
+    author.setDescription(author.getDescription());
+    author.setLifePeriod(author.getLifePeriod());
+    service.update(author);
     return "redirect:/authors";
   }
 
@@ -135,6 +149,18 @@ public class MVCAuthorController {
   public String getOne(@PathVariable Long id, Model model) {
     model.addAttribute("author", authorWithBooksMapper.toDto(service.getOne(id)));
     return "authors/viewAuthor";
+  }
+
+  @GetMapping("/block/{id}")
+  public String block(@PathVariable Long id) {
+    service.block(id);
+    return "redirect:/books";
+  }
+
+  @GetMapping("/unblock/{id}")
+  public String unblock(@PathVariable Long id) {
+    service.unblock(id);
+    return "redirect:/books";
   }
 
 }

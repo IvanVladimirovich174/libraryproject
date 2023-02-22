@@ -13,7 +13,7 @@
   <div class="row">
     <div class="col">
       <a
-          href="/users/add-librerian"
+          href="/users/add-librarian"
           class="btn btn-secondary"
           role="button"
           style="float: right"
@@ -63,6 +63,8 @@
       <th scope="col">Дата рождения</th>
       <th scope="col">Телефон</th>
       <th scope="col">Адрес</th>
+      <th scope="col">Заблокирован</th>
+      <th scope="col">Роль</th>
       <th scope="col"></th>
     </tr>
     </thead>
@@ -77,14 +79,23 @@
       <td th:text="${user.birthDate}"></td>
       <td th:text="${user.phone}"></td>
       <td th:text="${user.address}"></td>
+      <td th:text="${user.isDeleted() ? 'Да' : 'Нет'}"></td>
+      <td th:text="${user.getRole().getDescription()}"></td>
       <td>
         <a
-            th:href="'/users/delete/' + ${user.id}"
-            class="btn btn-primary"
+            th:if="${!user.isDeleted()}"
+            th:href="'/users/ban/' + ${user.id}"
+            class="btn btn-danger"
             role="button"
-            onclick="return confirm('Вы действительно хотите удалить запись?');"
-            aria-disabled="true">Удалить</a>
-
+            onclick="return confirm('Вы действительно хотите заблокировать пользователя?');"
+            aria-disabled="true">Заблокировать</a>
+        <a
+            th:if="${user.isDeleted()}"
+            th:href="'/users/unban/' + ${user.id}"
+            class="btn btn-success"
+            role="button"
+            onclick="return confirm('Вы действительно хотите разблокировать пользователя?');"
+            aria-disabled="true">Разблокировать</a>
         <a
             th:href="'/users/profile/' + ${user.id}"
             class="btn btn-primary"

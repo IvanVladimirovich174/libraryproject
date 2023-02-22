@@ -1,4 +1,4 @@
-package ru.sbercources.library.rest.controller;
+package ru.sbercources.library;
 
 import lombok.Getter;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,7 +24,7 @@ public class CommonTest {
   private CustomUserDetailsService userDetailsService;
 
   public String token = "";
-  HttpHeaders headers = new HttpHeaders();
+  public HttpHeaders headers = new HttpHeaders();
 
   private String generateToken(String username) {
     return jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(username));

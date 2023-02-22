@@ -1,6 +1,7 @@
 package ru.sbercources.library.service.userDetails;
 
 import java.util.Collection;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

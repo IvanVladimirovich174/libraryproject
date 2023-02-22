@@ -17,6 +17,13 @@ public interface UserRepository extends GenericRepository<User> {
   """)
   List<User> findAllByCreatedBy(@Param(value = "createdBy") String createdBy);
 
-  User findUserByLogin(String login);
+  @Query(nativeQuery = true, value = """
+    select * from users where login = :login and is_deleted = false
+  """)
+  User findUserByLoginAndDeletedFalse(@Param(value = "login") String login);
+
+  User findByEmail(String email);
+
+  User findByChangePasswordToken(String token);
 
 }
