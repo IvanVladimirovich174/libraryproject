@@ -1,14 +1,9 @@
 package ru.sbercources.library.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import java.sql.Date;
+import lombok.*;
+
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.sql.Date;
 
 @Getter
 @Setter
@@ -16,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto extends GenericDto{
-
   private RoleDto role;
   @NotBlank(message = "Поле не должно быть пустым")
   private String firstName;
@@ -37,5 +31,4 @@ public class UserDto extends GenericDto{
   //TODO разобраться почему нельзя поставить LocalDate
 //  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'")
   private Date birthDate;
-
 }

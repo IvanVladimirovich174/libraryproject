@@ -10,7 +10,6 @@ import ru.sbercources.library.repository.UserRepository;
 
 @Component
 public class PublishMapper extends GenericMapper<Publish, PublishDto> {
-
   private final BookRepository bookRepository;
   private final UserRepository userRepository;
 
@@ -41,5 +40,4 @@ public class PublishMapper extends GenericMapper<Publish, PublishDto> {
     destination.setUserId(source.getUser().getId());
     destination.setBookId(source.getBook().getId());
   }
-
 }

@@ -1,29 +1,11 @@
 package ru.sbercources.library.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name ="authors")
@@ -52,7 +34,6 @@ public class Author extends GenericModel {
       inverseJoinColumns = @JoinColumn(name = "book_id"),
       inverseForeignKey = @ForeignKey(name = "FK_BOOKS_AUTHORS"))
   private Set<Book> books = new HashSet<>();
-
 
   @Builder
   public Author(Long id, String createdBy, LocalDateTime createdWhen, LocalDateTime updatedWhen, String updatedBy, boolean isDeleted,

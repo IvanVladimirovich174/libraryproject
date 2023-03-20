@@ -1,11 +1,11 @@
 package ru.sbercources.library.dto;
 
-import java.time.LocalDateTime;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 
 @Data
 public abstract class GenericDto {
-
   private Long id;
   private String createdBy;
   private LocalDateTime createdWhen;

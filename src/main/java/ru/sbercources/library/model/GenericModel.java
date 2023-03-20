@@ -17,7 +17,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @MappedSuperclass
 public abstract class GenericModel {
-
   @Id
   @Column(name="id", nullable = false)
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "default_generator")

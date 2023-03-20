@@ -1,17 +1,16 @@
 package ru.sbercources.library.mapper;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.sbercources.library.dto.GenericDto;
 import ru.sbercources.library.model.GenericModel;
 
+import java.util.List;
+import java.util.Objects;
+
 @Component
 public abstract class GenericMapper<E extends GenericModel, D extends GenericDto> implements Mapper<E, D> {
-
   protected final ModelMapper mapper;
   private final Class<E> entityClass;
   private final Class<D> dtoClass;
@@ -65,11 +64,8 @@ public abstract class GenericMapper<E extends GenericModel, D extends GenericDto
   }
 
   void mapSpecificFields(D source, E destination) {
-
   }
 
   void mapSpecificFields(E source, D destination) {
-
   }
-
 }

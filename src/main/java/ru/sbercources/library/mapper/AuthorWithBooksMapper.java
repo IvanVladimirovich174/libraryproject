@@ -1,20 +1,19 @@
 package ru.sbercources.library.mapper;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.sbercources.library.dto.AuthorDto;
 import ru.sbercources.library.dto.AuthorWithBooksDto;
 import ru.sbercources.library.model.Author;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.repository.BookRepository;
 
+import javax.annotation.PostConstruct;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class AuthorWithBooksMapper extends GenericMapper<Author, AuthorWithBooksDto> {
-
   private final ModelMapper mapper;
   private final BookRepository bookRepository;
 
