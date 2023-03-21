@@ -6,5 +6,4 @@ import ru.sbercources.library.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
-
 }

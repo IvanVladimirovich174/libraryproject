@@ -13,5 +13,4 @@ import ru.sbercources.library.model.GenericModel;
  */
 @NoRepositoryBean
 public interface GenericRepository<T extends GenericModel> extends JpaRepository<T, Long> {
-
 }
