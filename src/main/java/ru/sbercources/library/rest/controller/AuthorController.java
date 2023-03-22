@@ -1,14 +1,8 @@
 package ru.sbercources.library.rest.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.sbercources.library.dto.AddBookDto;
 import ru.sbercources.library.dto.AuthorDto;
 import ru.sbercources.library.dto.AuthorWithBooksDto;
@@ -16,7 +10,8 @@ import ru.sbercources.library.mapper.AuthorMapper;
 import ru.sbercources.library.mapper.AuthorWithBooksMapper;
 import ru.sbercources.library.model.Author;
 import ru.sbercources.library.service.AuthorService;
-import ru.sbercources.library.service.GenericService;
+
+import java.util.List;
 
 
 /**
@@ -29,7 +24,6 @@ import ru.sbercources.library.service.GenericService;
 @RequestMapping("/rest/author")
 @SecurityRequirement(name = "Bearer Authentication")
 public class AuthorController extends GenericController<Author, AuthorDto> {
-
   private final AuthorService service;
   private final AuthorWithBooksMapper authorWithBooksMapper;
 

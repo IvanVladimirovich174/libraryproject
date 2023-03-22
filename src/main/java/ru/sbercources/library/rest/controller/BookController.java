@@ -1,7 +1,5 @@
 package ru.sbercources.library.rest.controller;
 
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,26 +11,26 @@ import ru.sbercources.library.model.Book;
 import ru.sbercources.library.model.Genre;
 import ru.sbercources.library.service.BookService;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/rest/book")
 public class BookController extends GenericController<Book, BookDto> {
+    private final BookService service;
+    private final BookMapper mapper;
 
-  private final BookService service;
-  private final BookMapper mapper;
+    public BookController(BookService service, BookMapper mapper) {
+        super(service, mapper);
+        this.mapper = mapper;
+        this.service = service;
+    }
 
-  public BookController(BookService service, BookMapper mapper) {
-    super(service, mapper);
-    this.mapper = mapper;
-    this.service = service;
-  }
-
-  @GetMapping("/search")
-  public List<BookDto> search(
-      @RequestParam(value = "title", required = false) String title,
-      @RequestParam(value = "genre", required = false) Genre genre
-  ) {
-    return mapper.toDtos(service.search(title, genre));
-  }
-
+    @GetMapping("/search")
+    public List<BookDto> search(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "genre", required = false) Genre genre
+    ) {
+        return mapper.toDtos(service.search(title, genre));
+    }
 }

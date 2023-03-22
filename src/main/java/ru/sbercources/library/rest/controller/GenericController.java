@@ -1,21 +1,15 @@
 package ru.sbercources.library.rest.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.sbercources.library.dto.GenericDto;
 import ru.sbercources.library.mapper.GenericMapper;
 import ru.sbercources.library.model.GenericModel;
 import ru.sbercources.library.service.GenericService;
+
+import java.util.List;
 
 /**
  * Абстрактный контроллер
@@ -25,8 +19,6 @@ import ru.sbercources.library.service.GenericService;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public abstract class GenericController<T extends GenericModel, N extends GenericDto> {
-
-
   private final GenericService<T> service;
   private final GenericMapper<T, N> mapper;
   protected GenericController(GenericService<T> service, GenericMapper<T, N> mapper) {

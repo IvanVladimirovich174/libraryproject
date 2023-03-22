@@ -20,5 +20,4 @@ public interface BookRepository extends GenericRepository<Book> {
     List<Book> findBooksByAuthorsId(Long id);
 
     Page<Book> findAllByIsDeletedFalse(Pageable pageable);
-
 }

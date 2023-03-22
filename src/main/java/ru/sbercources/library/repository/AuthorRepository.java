@@ -14,5 +14,4 @@ public interface AuthorRepository extends GenericRepository<Author> {
     Page<Author> findAllByAuthorFIO(Pageable pageable, String authorFIO);
 
     Page<Author> findAllByIsDeletedFalse(Pageable pageable);
-
 }

@@ -21,5 +21,4 @@ public class RoleController {
   public List<Role> list() {
     return service.getList();
   }
-
 }
