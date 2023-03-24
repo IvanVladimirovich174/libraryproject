@@ -1,6 +1,5 @@
 package ru.sbercources.library;
 
-import lombok.Getter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -16,23 +15,23 @@ import ru.sbercources.library.service.userDetails.CustomUserDetailsService;
 @AutoConfigureMockMvc
 @TestInstance(Lifecycle.PER_CLASS)
 public class CommonTest {
-  @Autowired
-  public MockMvc mvc;
-  @Autowired
-  private JwtTokenUtil jwtTokenUtil;
-  @Autowired
-  private CustomUserDetailsService userDetailsService;
+    @Autowired
+    public MockMvc mvc;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
-  public String token = "";
-  public HttpHeaders headers = new HttpHeaders();
+    public String token = "";
+    public HttpHeaders headers = new HttpHeaders();
 
-  private String generateToken(String username) {
-    return jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(username));
-  }
+    private String generateToken(String username) {
+        return jwtTokenUtil.generateToken(userDetailsService.loadUserByUsername(username));
+    }
 
-  @BeforeAll
-  public void prepare() {
-    token = generateToken("asd");
-    headers.add("Authorization", "Bearer " + token);
-  }
+    @BeforeAll
+    public void prepare() {
+        token = generateToken("asd");
+        headers.add("Authorization", "Bearer " + token);
+    }
 }
